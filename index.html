@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app="classes_studentsApp">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" media="screen" title="no title">
+    <title></title>
+  </head>
+  <body ng-controller="mainCtrl as main" class="container">
+    <h1>Class Creator</h1>
+    <hr>
+    <div class="col-md-4 column" ng-controller="Classes as classes">
+      <div class="singleClass" ng-repeat="class in classes.classes">
+        <h2>Class Name: {{class.className}}</h2>
+        <h2>Teaher Name: {{class.teacher}}</h2>
+        <h2>Students: {{class.students | length}}</h2>
+        <ul ng-repeat="student in class.students track by $index">
+          <li>{{student.name}} ({{student.grade | gradeLetter}}) <span class="glyphicon glyphicon-minus" ng-click="classes.minusGrade(class.students[$index])"></span><span class="glyphicon glyphicon-plus" ng-click="classes.addGrade(class.students[$index])"></span></li>
+        </ul>
+      </div>
+      <hr>
+    </div>
+    <div class="col-md-4 column" ng-controller="New as new">
+      <div class="new">
+        <h2>Create New Class</h2>
+        <form name="newClass" novalidate ng-submit="new.classSubmit()">
+          <div class="col-md-6">
+            <label for="className">Class Name</label>
+            <input type="text" name="className" ng-minlength=3 ng-maxlength=20 ng-model="new.className" class="form-conttrol" required>
+            <p ng-show="newClass.className.$invalid && !newClass.className.$pristine">Enter vaild class</p>
+          </div>
+          <div class="col-md-6">
+            <label for="teacher">Teacher Name</label>
+            <input type="text" name="teacher" ng-minlength=3 ng-maxlength=20 ng-model="new.teacher" class="form-conttrol" required>
+            <p ng-show="newClass.teacher.$invalid && !newClass.teacher.$pristine">Enter vaild name</p>
+          </div>
+          <button type="submit" class="btn addBtn" ng-disabled="newClass.$invalid">Add Class</button>
+        </form>
+      </div>
+      <div class="new">
+        <h2>Create New Student</h2>
+        <form name="newStudent" novalidate ng-submit="new.studentSubmit()">
+          <div class="col-md-6">
+            <label for="class">Class</label>
+            <select class="form-control" name="class" ng-model="new.class" ng-init="new.class='0'" required>
+              <option ng-repeat="class in new.classes track by $index" value="{{$index}}">{{class.className}} w/ {{class.teacher}}</option>
+            </select>
+            <p ng-show="newStudent.class.$invalid && !newStudent.class.$pristine">Enter vaild name</p>
+          </div>
+          <div class="col-md-6">
+            <label for="studentName">Student Name</label>
+            <input type="text" name="studentName" ng-minlength=3 ng-maxlength=20 ng-model="new.studentName" class="form-conttrol" required>
+            <p ng-show="newStudent.studentName.$invalid && !newStudent.studentName.$pristine">Enter vaild name</p>
+          </div>
+          <button type="submit" class="btn addBtn" ng-disabled="newStudent.$invalid">Add Student</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-4 column" ng-controller="Stats as stats">
+      <h3>Total number of classes: {{stats.classes | length}}</h3>
+      <h3>Total number of stuents: {{stats.classes | allStudents | length}}</h3>
+      <hr>
+      <h3>Stats for:</h3>
+      <form class="statForm">
+        <select class="form-control" name="class" ng-model="stats.class">
+          <option ng-selected="stats.classes[0]" ng-repeat="class in stats.classes" value="{{class}}">{{class.className}} w/ {{class.teacher}} </option>
+        </select>
+        <h3>Average Grade: {{stats.class | classGradeAvg | gradeLetter}}</h3>
+      </form>
+    </div>
+
+  </body>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+  <script type="text/javascript" src='main.js'></script>
+  <script type="text/javascript" src='controllers.js'></script>
+</html>

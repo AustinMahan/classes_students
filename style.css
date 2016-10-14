@@ -1,0 +1,15 @@
+.column{
+  float: left;
+}
+
+.new{
+  border: 1px solid grey;
+  background-color: lightgrey;
+  height: 250px;
+  padding: 20px 0px;
+}
+.addBtn{
+  margin-top: 20px;
+  margin-right: 20px;
+  float: right;
+}
